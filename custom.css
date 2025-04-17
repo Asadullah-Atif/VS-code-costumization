@@ -1,194 +1,260 @@
 /* ================================================
    MONACO ULTIMATE PRO - PERFECT BALANCE
    Combines:
-   - Zen Theme's clean readability
-   - Custom elements' visual polish
-   - Professional workflow optimizations
+   - Zen Theme's clean readability (clear, distraction-free look)
+   - Custom elements' visual polish (premium, modern styling)
+   - Professional workflow optimizations (fast and accessible)
    ================================================ */
 
+/* Root variables for easy theme customization */
 :root {
   /* ========== CORE PALETTE ========== */
-  --editor-bg: #1e1e1e; /* IDE-standard dark gray */
-  --editor-fg: #e0e0e0; /* Optimal text brightness */
-  --accent-primary: #4d9be6; /* Professional blue */
-  --accent-secondary: #c0a942; /* Golden yellow for highlights */
+  --monaco-bg: #1e1e1e; /* Dark gray background, standard for Monaco Editor */
+  --monaco-fg: #e0e0e0; /* Light gray text for optimal readability */
+  --theme-blue: #4d9be6; /* Professional blue for active elements */
+  --theme-gold: #c0a942; /* Golden yellow for highlights like links */
 
   /* ========== SYNTAX COLORS ========== */
-  --syntax-comment: #6a9955; /* Soft green */
-  --syntax-string: #ce9178; /* Warm peach */
-  --syntax-keyword: #569cd6; /* Classic blue */
-  --syntax-number: #b5cea8; /* Muted mint */
-  --syntax-function: #daaadc; /* Light yellow */
-  --syntax-type: #c9944e; /* Teal for types */
-  --syntax-operator: #d4d4d4; /* Neutral operators */
-  --syntax-tag: #ac80dd; /* HTML/XML tags (matches keywords) */
-  --syntax-attribute: #9cdcfe; /* HTML/XML attributes */
-  --syntax-regex: #d16969; /* Regular expressions */
+  --syntax-comment: #6a9955; /* Soft green for comments, italic for distinction */
+  --syntax-string: #ce9178; /* Warm peach for strings, clear and readable */
+  --syntax-keyword: #569cd6; /* Classic blue for keywords, bold for emphasis */
+  --syntax-number: #b5cea8; /* Muted mint for numbers, subtle yet distinct */
+  --syntax-function: #f0c4f0; /* Bright magenta for functions, pops on dark bg */
+  --syntax-type: #c9944e; /* Teal for types/classes, unique and clear */
+  --syntax-operator: #d4d4d4; /* Neutral gray for operators, doesn't distract */
+  --syntax-tag: #ac80dd; /* Purple for HTML/XML tags, matches keyword vibe */
+  --syntax-attribute: #9cdcfe; /* Light blue for HTML/XML attributes, stands out */
+  --syntax-regex: #d16969; /* Reddish for regex, grabs attention */
 
-  /* ========== UI ELEMENTS ========== */
-  --ui-cursor: #ffffff;
-  --ui-selection: #264f78;
-  --ui-line-highlight: #282828;
-  --ui-tab-active: var(--accent-primary);
-  --ui-tab-inactive: #2d2d2d;
-  --ui-border: #383838;
-  --ui-hover: #252526;
+  /* ========== EDITOR UI ELEMENTS ========== */
+  --editor-cursor: #ffffff; /* White cursor, visible but not harsh */
+  --editor-selection: #264f78; /* Dark blue for text selection, subtle highlight */
+  --editor-line-highlight: #282828; /* Light gray for active line highlight */
+  --editor-tab-active: var(--theme-blue); /* Blue for active tab */
+  --editor-tab-inactive: #2d2d2d; /* Dark gray for inactive tabs */
+  --editor-border: #383838; /* Medium gray for borders, clean separation */
+  --editor-hover: #252526; /* Light gray for hover effects, subtle feedback */
 
   /* ========== DIMENSIONS ========== */
-  --border-width: 1px;
-  --tab-height: 32px;
+  --border-size: 1px; /* Thin borders for clean look */
+  --tab-size: 32px; /* Tab height for comfortable clicking */
 }
 
 /* ================================================
    BASE EDITOR STYLES (Zen-inspired clarity)
    ================================================ */
+/* Main editor container styling */
 .monaco-editor {
-  background-color: var(--editor-bg);
-  color: var(--editor-fg);
-  font-feature-settings: "liga" off, "calt" off;
-  font-variant-ligatures: none;
+  background-color: var(--monaco-bg); /* Set editor background */
+  color: var(--monaco-fg); /* Set default text color */
+  font-feature-settings: "liga" off, "calt" off; /* Disable ligatures for code clarity */
+  font-variant-ligatures: none; /* Ensure no ligatures in code */
 }
 
 /* ================================================
    HYBRID CURSOR (Visible but not distracting)
    ================================================ */
+/* Cursor styling for dark theme */
 .vs-dark .monaco-editor .cursor {
-  background-color: white;
-  width: 2px;
-  border-radius: 0;
-  box-shadow: 0 0 5px 1px white;
+  background-color: var(
+    --editor-cursor,
+    white
+  ); /* White cursor, fallback to white */
+  width: var(--cursor-width, 2px); /* Thin cursor for precision */
+  border-radius: 0; /* Sharp edges for crisp appearance */
+  box-shadow: 0 0 3px 1px var(--editor-cursor, rgba(255, 255, 255, 0.5)); /* Subtle glow, reduces eye strain */
 }
 
-.monaco-editor .cursor:hover,
+/* Cursor styling for light theme */
+.vs-light .monaco-editor .cursor {
+  background-color: var(
+    --editor-cursor,
+    black
+  ); /* Black cursor for light theme */
+  width: var(--cursor-width, 2px); /* Consistent width */
+  border-radius: 0; /* Sharp edges */
+  box-shadow: 0 0 3px 1px var(--editor-cursor, rgba(0, 0, 0, 0.5)); /* Subtle glow for light theme */
+}
+
+/* Cursor hover effect */
+.monaco-editor .cursor:hover {
+  opacity: 1; /* Full visibility on hover */
+  outline: 1px solid var(--cursor-outline, rgba(255, 255, 255, 0.7)); /* Outline for performance */
+}
+
+/* Cursor blink animation */
 .monaco-editor .cursor.blink {
-  opacity: 1;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+  animation: blink 1s step-end infinite; /* Blink effect for cursor */
+}
+
+/* Keyframes for cursor blink */
+@keyframes blink {
+  50% {
+    opacity: 0; /* Cursor fades out halfway through cycle */
+  }
+}
+
+/* High-contrast mode for cursor accessibility */
+@media (prefers-contrast: high) {
+  .monaco-editor .cursor {
+    width: 4px; /* Thicker cursor for better visibility */
+    box-shadow: none; /* Remove glow for clarity */
+  }
 }
 
 /* ================================================
-   OPTIMIZED LINK STYLING (4px → 2px)
+   OPTIMIZED LINK STYLING
    ================================================ */
+/* Styling for detected links (e.g., URLs in code) */
 .monaco-editor .detected-link {
-  text-decoration: none;
-  border-bottom: 2px dotted var(--accent-secondary);
-  transition: border-color 0.2s ease;
+  text-decoration: none; /* No underline, cleaner look */
+  border-bottom: 2px dotted var(--theme-gold); /* Golden dotted underline */
+  transition: border-color 0.2s ease; /* Smooth color change on hover */
 }
 
+/* Link hover effect */
 .monaco-editor .detected-link:hover {
-  border-bottom-color: #e0c860;
+  border-bottom-color: #e0c860; /* Brighter yellow for hover */
 }
 
 /* ================================================
-   ENHANCED TAB SYSTEM (Best of both)
+   ENHANCED TAB SYSTEM
    ================================================ */
+/* Editor tab container */
 .monaco-workbench .part.editor > .content .editor-group-container > .title {
-  height: var(--tab-height);
-  border-bottom: var(--border-width) solid var(--ui-border);
+  height: var(--tab-size); /* Set tab bar height */
+  border-bottom: var(--border-size) solid var(--editor-border); /* Thin border below tabs */
 }
 
+/* Inactive tabs */
 .monaco-workbench
   .part.editor
   > .content
   .editor-group-container
   > .title
   .tab {
-  background-color: var(--ui-tab-inactive);
-  border-right: var(--border-width) solid var(--ui-border);
-  transition: background-color 120ms ease-out;
+  background-color: var(
+    --editor-tab-inactive
+  ); /* Dark gray for inactive tabs */
+  border-right: var(--border-size) solid var(--editor-border); /* Thin border between tabs */
+  transition: background-color 120ms ease-out; /* Smooth background change */
 }
 
+/* Active tab */
 .monaco-workbench
   .part.editor
   > .content
   .editor-group-container
   > .title
   .tab.active {
-  background-color: var(--editor-bg);
-  position: relative;
+  background-color: var(
+    --monaco-bg
+  ); /* Match editor background for active tab */
+  position: relative; /* For positioning gradient */
 }
 
-/* Subtle gradient animation (slower 8s cycle) */
+/* Gradient animation for active tab */
 .monaco-workbench
   .part.editor
   > .content
   .editor-group-container
   > .title
   .tab.active::before {
-  content: "";
-  position: absolute;
+  content: ""; /* Empty content for pseudo-element */
+  position: absolute; /* Position at top of tab */
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 2px; /* Thin gradient bar */
   background: linear-gradient(
     90deg,
     #11998f,
     #d13abd 50%,
     #efbd8a 80%,
     #11998f
-  );
-  background-size: 200% 100%;
-  animation: tab-gradient 8s linear infinite;
+  ); /* Colorful gradient for premium feel */
+  background-size: 200% 100%; /* For smooth animation */
+  animation: tab-gradient 8s linear infinite; /* Slow, continuous animation */
 }
 
 /* ================================================
-   SEMANTIC SYNTAX HIGHLIGHTING (Zen colors)
+   SEMANTIC SYNTAX HIGHLIGHTING
    ================================================ */
+/* Default text */
 .mtk1 {
-  color: var(--editor-fg);
+  color: var(--monaco-fg); /* Main text color */
 }
+
+/* Comments */
 .mtk2 {
-  color: var(--syntax-comment);
+  color: var(--syntax-comment); /* Green, italic for comments */
   font-style: italic;
 }
+
+/* Strings */
 .mtk3 {
-  color: var(--syntax-string);
+  color: var(--syntax-string); /* Peach for strings */
 }
+
+/* Keywords */
 .mtk4 {
-  color: var(--syntax-keyword);
+  color: var(--syntax-keyword); /* Blue, bold for keywords */
   font-weight: 500;
 }
+
+/* Numbers */
 .mtk5 {
-  color: var(--syntax-number);
+  color: var(--syntax-number); /* Mint for numbers */
 }
+
+/* Functions */
 .mtk6 {
-  color: var(--syntax-function);
+  color: var(--syntax-function); /* Magenta for functions */
+  font-weight: 500; /* Bold for emphasis, matches keywords */
 }
+
+/* Types */
 .mtk7 {
-  color: var(--syntax-type);
+  color: var(--syntax-type); /* Teal for types */
 }
+
+/* Operators */
 .mtk8 {
-  color: var(--syntax-operator);
+  color: var(--syntax-operator); /* Neutral gray for operators */
 }
+
+/* Tags */
 .mtk9 {
-  color: var(--syntax-tag);
+  color: var(--syntax-tag); /* Purple for HTML/XML tags */
 }
+
+/* Attributes */
 .mtk10 {
-  color: var(--syntax-attribute);
+  color: var(--syntax-attribute); /* Light blue for HTML/XML attributes */
 }
+
+/* Regex */
 .mtk11 {
-  color: var(--syntax-regex);
+  color: var(--syntax-regex); /* Reddish for regex */
 }
-/* ================================================
-   MONACO ULTIMATE PRO - COMPLETE THEME
-   Now with .mtk9 support and additional refinements
-   ================================================ */
 
 /* ================================================
-   ACCOUNT ICON (With proper fallbacks)
+   ACCOUNT ICON
    ================================================ */
-
+/* Custom account icon in sidebar */
 .codicon-accounts-view-bar-icon:before {
-  content: "";
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-image: url(/D:/demo/download.jpg);
-  background-size: cover;
+  content: ""; /* Empty content for icon */
+  width: 32px; /* Fixed width for circular icon */
+  height: 32px; /* Fixed height */
+  border-radius: 50%; /* Circular shape */
+  background-image: url("./icon.jpg"); /* Relative path to icon, place in same folder */
+  background-size: cover; /* Ensure image fits icon */
 }
+
 /* ================================================
    ACCESSIBILITY ENHANCEMENTS
    ================================================ */
+/* Disable animations for reduced motion */
 @media (prefers-reduced-motion) {
   .monaco-workbench
     .part.editor
@@ -196,39 +262,43 @@
     .editor-group-container
     > .title
     .tab.active::before {
-    animation: none;
-    background: var(--accent-primary);
+    animation: none; /* Remove gradient animation */
+    background: var(--theme-blue); /* Fallback to solid blue */
   }
 
   .monaco-editor .cursor {
-    animation: none !important;
-    -webkit-animation: none !important;
+    animation: none !important; /* Disable cursor blink */
+    -webkit-animation: none !important; /* Ensure compatibility */
   }
 }
 
+/* High-contrast mode for better visibility */
 @media (prefers-contrast: more) {
   :root {
-    --editor-bg: #000000;
-    --editor-fg: #ffffff;
-    --ui-cursor: #ffff00;
-    --syntax-keyword: #4fc3f7;
+    --monaco-bg: #000000; /* Pure black background */
+    --monaco-fg: #ffffff; /* Pure white text */
+    --editor-cursor: #ffff00; /* Bright yellow cursor */
+    --syntax-keyword: #4fc3f7; /* Brighter blue for keywords */
+    --syntax-function: #ff99ff; /* Ultra-bright magenta for functions */
   }
 
   .monaco-editor .detected-link {
-    border-bottom-style: solid;
+    border-bottom-style: solid; /* Solid underline for links */
   }
 }
 
 /* ================================================
    PERFORMANCE OPTIMIZATIONS
    ================================================ */
+/* Optimize editor rendering */
 .monaco-editor .view-lines {
-  contain: strict;
-  will-change: transform;
+  contain: strict; /* Restrict rendering to improve performance */
+  will-change: transform; /* Hint browser for smoother animations */
 }
 
+/* Keyframes for tab gradient animation */
 @keyframes tab-gradient {
   to {
-    background-position: -200% 0;
+    background-position: -200% 0; /* Move gradient for continuous effect */
   }
 }
